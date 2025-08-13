@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Opportunities - CapitalRaise</title>
+    <style>
+        /* ===== CSS RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            
+            /* Success Colors */
+            --success: #059669;
+            --success-dark: #047857;
+            --success-light: #10b981;
+            --success-50: #ecfdf5;
+            
+            /* Secondary Colors */
+            --secondary: #f8fafc;
+            --secondary-dark: #f1f5f9;
+            
+            /* Text Colors */
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --text-light: #cbd5e1;
+            
+            /* Background Colors */
+            --bg-white: #ffffff;
+            --bg-gray-50: #f8fafc;
+            --bg-gray-100: #f1f5f9;
+            --bg-gray-200: #e2e8f0;
+            
+            /* Border Colors */
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --border-dark: #cbd5e1;
+            
+            /* Status Colors */
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --info: #0ea5e9;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-20: 5rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-full: 9999px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+            background-color: var(--bg-gray-50);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== HEADER SECTION ===== */
+        .header {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-8);
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.875rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            letter-spacing: -0.025em;
+        }
+
+        .logo::before {
+            content: '🏢';
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: var(--space-8);
+        }
+
+        .nav-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary);
+            background-color: var(--primary-50);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+        }
+
+        .raise-funds-btn {
+            background: var(--primary);
+            color: var(--bg-white);
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .raise-funds-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* User Profile Dropdown */
+        .user-profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-2);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background-color: var(--bg-gray-50);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-white);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .user-info p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .dropdown-arrow {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            min-width: 240px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--bg-gray-50);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--border);
+            margin: var(--space-2) 0;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-16) 0;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--space-4);
+            letter-spacing: -0.025em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-12);
+            font-weight: 400;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto var(--space-12);
+            display: flex;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: var(--space-4) var(--space-5);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-50);
+        }
+
+        .filter-select {
+            padding: var(--space-4) var(--space-5);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            background: var(--bg-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-50);
+        }
+
+        .search-btn {
+            background: var(--primary);
+            color: var(--bg-white);
+            padding: var(--space-4) var(--space-8);
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-12);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+            margin-bottom: var(--space-1);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== COMPANY LISTING SECTION ===== */
+        .listing-section {
+            padding: var(--space-20) 0;
+        }
+
+        .listing-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-12);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .sort-controls {
+            display: flex;
+            gap: var(--space-4);
+            align-items: center;
+        }
+
+        .sort-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .sort-select {
+            padding: var(--space-2) var(--space-4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            background: var(--bg-white);
+            cursor: pointer;
+        }
+
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-8);
+            margin-bottom: var(--space-16);
+        }
+
+        /* ===== COMPANY CARD COMPONENTS ===== */
+        .company-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-6);
+        }
+
+        .company-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            border: 2px solid var(--border-light);
+        }
+
+        .verification-badge {
+            background: var(--success);
+            color: var(--bg-white);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+
+        .verification-badge::before {
+            content: '✓';
+            font-size: 0.8rem;
+        }
+
+        .company-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--space-2);
+            line-height: 1.3;
+        }
+
+        .company-tagline {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: var(--space-4);
+            line-height: 1.5;
+        }
+
+        .industry-tags {
+            display: left;
+            flex-wrap: wrap;
+            gap: var(--space-2);
+            margin-bottom: var(--space-6);
+        }
+
+        .industry-tag {
+            background: var(--bg-gray-100);
+            color: var(--text-secondary);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .funding-progress {
+            margin-bottom: var(--space-6);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-3);
+        }
+
+        .amount-raised {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .funding-goal {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: var(--space-2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--success-light));
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+
+        .progress-percentage {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .key-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
+            padding: var(--space-4);
+            background: var(--bg-gray-50);
+            border-radius: var(--radius-lg);
+        }
+
+        .metric-item {
+            font-size: 0.85rem;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: var(--space-1);
+        }
+
+        .metric-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-50);
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: var(--success);
+            color: var(--bg-white);
+            border: 2px solid var(--success);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--success-dark);
+            border-color: var(--success-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== REGISTRATION CTA SECTION ===== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--bg-white);
+            padding: var(--space-20) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .cta-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: var(--space-6);
+            letter-spacing: -0.025em;
+        }
+
+        .cta-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-8);
+            margin-bottom: var(--space-12);
+            text-align: left;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-content h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+
+        .benefit-content p {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .cta-actions {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-6);
+            flex-wrap: wrap;
+        }
+
+        .btn-cta-primary {
+            background: var(--bg-white);
+            color: var(--primary);
+            padding: var(--space-5) var(--space-10);
+            border-radius: var(--radius-lg);
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-cta-secondary {
+            color: var(--bg-white);
+            padding: var(--space-5) var(--space-10);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-lg);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--bg-white);
+        }
+
+        /* ===== PAGINATION CONTROLS ===== */
+        .pagination-section {
+            padding: var(--space-16) 0;
+            background: var(--bg-white);
+        }
+
+        .pagination-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .pagination-btn {
+            padding: var(--space-2) var(--space-4);
+            border: 1px solid var(--border);
+            background: var(--bg-white);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pagination-btn:hover,
+        .pagination-btn.active {
+            background: var(--primary);
+            color: var(--bg-white);
+            border-color: var(--primary);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .items-per-page label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .items-per-page select {
+            padding: var(--space-2) var(--space-3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            background: var(--bg-white);
+            cursor: pointer;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--text-primary);
+            color: var(--bg-white);
+            padding: var(--space-16) 0 var(--space-8);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-12);
+            margin-bottom: var(--space-12);
+        }
+
+        .footer-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+            color: var(--bg-white);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-2);
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--bg-white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: var(--space-8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+        }
+
+        .footer-disclaimer {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .footer-copyright {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1200px) {
+            .companies-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .header-container {
+                padding: 0 var(--space-4);
+            }
+            
+            .hero-container,
+            .listing-container,
+            .cta-container,
+            .pagination-container,
+            .footer-container {
+                padding: 0 var(--space-4);
+            }
+            
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-input {
+                min-width: auto;
+            }
+            
+            .stats-bar {
+                gap: var(--space-6);
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: var(--space-4);
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .companies-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-section {
+                padding: var(--space-12) 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .company-card {
+                padding: var(--space-6);
+            }
+            
+            .key-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+            }
+            
+            .cta-benefits {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .cta-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pagination-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .user-info {
+                display: none;
+            }
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .search-input:focus,
+        .filter-select:focus,
+        .sort-select:focus,
+        .pagination-btn:focus,
+        .btn-primary:focus,
+        .btn-secondary:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --border: #000000;
+                --text-secondary: #000000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER SECTION ===== -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Platform Logo -->
+            <a href="#" class="logo">CapitalRaise</a>
+            
+            <!-- Main Navigation -->
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#" class="active">Discover</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="{% url "dashboard" %}">Home</a></li>
+                    <li><a href="#">Resources</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Right Side -->
+            <div class="header-right">
+                <!-- Raise Funds Button -->
+                <a href="{% url "submitcompany" %}" class="raise-funds-btn">Raise Funds for Your Company</a>
+                
+                <!-- User Profile Dropdown -->
+                <div class="user-profile" onclick="toggleDropdown()">
+                    <div class="user-avatar">
+                        {{lastname}}
+                    </div>
+                    <div class="user-info">
+                        <h4>{{lastname}}</h4>
+                        <p>{{ustype}}</p>
+                    </div>
+                    <span class="dropdown-arrow">▼</span>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="{% url "profile" %}" class="dropdown-item">
+                            <span>👤</span>
+                            <span>My Profile</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <span>💼</span>
+                            <span>My Portfolio</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <span>⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url "login" %}" class="dropdown-item">
+                            <span>🚪</span>
+                            <span>Sign Out</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="hero-section">
+        <div class="hero-container">
+            <h1 class="hero-title">Investment Opportunities</h1>
+            <p class="hero-subtitle">Browse vetted companies seeking capital</p>
+            
+            <!-- Search Bar with Filters -->
+            <form method="post" action="{% url 'pdashboard' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+        <div class="search-container">
+        <input type="text" class="search-input" name="search" placeholder="Search companies, industries, or keywords...">
+        
+        <select class="filter-select" name="category">
+            <option value="">All Industries</option>
+            <option value="technology">Technology</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="fintech">FinTech</option>
+            <option value="ecommerce">E-commerce</option>
+        </select>
+
+        <select class="filter-select" name="location">
+            <option value="">All Locations</option>
+            <option value="us">United States</option>
+            <option value="uk">United Kingdom</option>
+            <option value="canada">Canada</option>
+            <option value="germany">Germany</option>
+            <option value="ind">india</option>
+        </select>
+
+        <a href='{% url "pdashboard" %}'><button class="search-btn">Search</button></a>
+    </div>
+</form>
+
+            
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-value"><!-- DJANGO: {{ companies_count }} -->247</span>
+                    <span class="stat-label">Companies Raising</span>  
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value"><!-- DJANGO: {{ total_seeking }} -->$2.4B</span>
+                    <span class="stat-label">Total Seeking</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value"><!-- DJANGO: {{ active_investors }} -->1,847</span>
+                    <span class="stat-label">Investors Active</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== COMPANY LISTING SECTION ===== -->
+    <section class="listing-section">
+        <div class="listing-container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Opportunities</h2>
+            </div>
+            
+            <!-- Companies Grid -->
+            <div class="companies-grid">
+                {% for x in company %}
+                <!-- Company Card 1 -->
+                <article class="company-card">
+                    <div class="card-header">
+                        <div class="company-logo">
+                           <img  src="{{ x.company_logo.url }}" height="50px" width="50px"/>
+                        </div>
+                        <div class="verification-badge">Verified</div>
+                    </div>
+                    
+                    <h3 class="company-name">{{x.company_name}}</h3>
+                    <div class="funding-progress">
+                        <div class="progress-header">
+                            <h4>{{x.industry}}</h4>
+                            Fund Goal: 
+                            <span class="funding-goal">{{x.funding_goal}}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="key-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Valuation</div>
+                            <div class="metric-value">{{x.valuation}}</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Location</div>
+                            <div class="metric-value">{{x.company_origin}}</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Equity Offered</div>
+                            <div class="metric-value">{{x.equity_offered}} %</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Deadline</div>
+                            <div class="metric-value">{{x.funding_deadline}}</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Min. Investment</div>
+                            <div class="metric-value">{{x.min_investment}}</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Company Founded</div>
+                            <div class="metric-value">{{x.year_founded}}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <a href="{% url "detail" x.id %}" class="btn-secondary">View Details</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== REGISTRATION CTA SECTION ===== -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">Ready to raise capital for your business?</h2>
+            
+            <div class="cta-benefits">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🚀</div>
+                    <div class="benefit-content">
+                        <h3>Launch Your Campaign</h3>
+                        <p>Create a professional funding campaign with our easy-to-use tools and reach thousands of qualified investors.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-content">
+                        <h3>Targeted Investor Matching</h3>
+                        <p>Our AI-powered platform connects you with investors who are specifically interested in your industry and stage.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📈</div>
+                    <div class="benefit-content">
+                        <h3>Expert Support & Analytics</h3>
+                        <p>Get dedicated support from our team and access detailed analytics to optimize your fundraising strategy.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cta-actions">
+                <a href="{% url "submitcompany" %}" class="btn-cta-primary">Get Started</a>
+                <a href="#" class="btn-cta-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Platform</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">For Investors</a></li>
+                        <li><a href="#">For Companies</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Investment Guide</a></li>
+                        <li><a href="#">Fundraising Tips</a></li>
+                        <li><a href="#">Market Research</a></li>
+                        <li><a href="#">Legal Resources</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-disclaimer">
+                    <p><strong>Investment Disclaimer:</strong> All investments involve risk and may result in partial or total loss. Past performance does not guarantee future results. Please invest responsibly and consider your financial situation before making investment decisions. CapitalRaise is not a registered investment advisor.</p>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2024 CapitalRaise. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple dropdown toggle functionality
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const userProfile = document.querySelector('.user-profile');
+            const dropdown = document.getElementById('dropdownMenu');
+            
+            if (!userProfile.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

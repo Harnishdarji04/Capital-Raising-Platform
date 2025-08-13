@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapitalConnect - Investment Dashboard</title>
+    <style>
+        /* ===== CSS RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors */
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-800: #1e40af;
+            
+            /* Success/Financial Colors */
+            --success-50: #ecfdf5;
+            --success-100: #d1fae5;
+            --success-500: #10b981;
+            --success-600: #059669;
+            --success-700: #047857;
+            
+            /* Warning Colors */
+            --warning-50: #fffbeb;
+            --warning-100: #fef3c7;
+            --warning-500: #f59e0b;
+            --warning-600: #d97706;
+            
+            /* Danger Colors */
+            --danger-50: #fef2f2;
+            --danger-500: #ef4444;
+            --danger-600: #dc2626;
+            
+            /* Neutral Colors */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            height: 72px;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary-600);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '💼';
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary-600);
+            background-color: var(--primary-50);
+        }
+
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: var(--primary-600);
+            border-radius: 50%;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background-color: var(--gray-100);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        .notification-bell:hover {
+            background-color: var(--gray-200);
+            transform: translateY(-1px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: var(--danger-500);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        /* ===== USER PROFILE DROPDOWN ===== */
+        .user-profile-container {
+            position: relative;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            background: white;
+            position: relative;
+        }
+
+        .user-profile:hover {
+            background-color: var(--gray-50);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-profile:focus-within {
+            background-color: var(--gray-50);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .user-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .user-info p {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .dropdown-arrow {
+            color: var(--gray-400);
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* Dropdown Toggle Functionality */
+        .dropdown-toggle {
+            display: none;
+        }
+
+        .dropdown-toggle:checked + .user-profile .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-toggle:checked ~ .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .dropdown-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .dropdown-user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .dropdown-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .dropdown-user-details h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .dropdown-user-details p {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+
+        .dropdown-user-details .user-status {
+            font-size: 0.75rem;
+            color: var(--success-600);
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        .dropdown-items {
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--gray-700);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+        }
+
+        .dropdown-item.danger:hover {
+            background-color: var(--danger-50);
+            color: var(--danger-600);
+        }
+
+        .dropdown-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--gray-100);
+            margin: 0.5rem 0;
+        }
+
+        /* Close dropdown when clicking outside */
+        .dropdown-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-toggle:checked ~ .dropdown-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ===== HERO BANNER ===== */
+        .hero-banner {
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: left;
+        }
+
+        .hero-stat .value {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .hero-stat .label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ===== SECTION HEADERS ===== */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            margin-top: 0.25rem;
+        }
+
+        .view-all-link {
+            color: var(--primary-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .view-all-link:hover {
+            background-color: var(--primary-50);
+        }
+
+        /* ===== COMPANY CARDS GRID ===== */
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .company-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-200);
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--gray-100), var(--gray-200));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 2px solid var(--gray-200);
+        }
+
+        .company-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .company-info .industry-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .industry-tag.tech {
+            background-color: var(--primary-100);
+            color: var(--primary-700);
+        }
+
+        .industry-tag.fintech {
+            background-color: var(--success-100);
+            color: var(--success-700);
+        }
+
+        .industry-tag.healthcare {
+            background-color: var(--warning-100);
+            color: var(--warning-700);
+        }
+
+        .industry-tag.energy {
+            background-color: var(--success-100);
+            color: var(--success-700);
+        }
+
+        .verification-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--success-500);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .verification-badge::before {
+            content: '✓';
+        }
+
+        .funding-progress {
+            margin: 1.5rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-amount {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .progress-percentage {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--success-600);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-500), var(--success-600));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-target {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-top: 0.5rem;
+        }
+
+        .company-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: var(--gray-50);
+            border-radius: 12px;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            margin-top: 0.25rem;
+        }
+
+        .deadline-warning {
+            background-color: var(--warning-50);
+            border: 1px solid var(--warning-200);
+            color: var(--warning-700);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .deadline-warning::before {
+            content: '⏰';
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--success-500), var(--success-600));
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--success-600), var(--success-700));
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-600);
+            border: 1px solid var(--primary-200);
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-50);
+            border-color: var(--primary-300);
+        }
+
+        /* ===== INVESTMENT SUMMARY SECTION ===== */
+        .investment-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .summary-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .summary-icon.investments {
+            background-color: var(--success-100);
+            color: var(--success-600);
+        }
+
+        .summary-icon.watchlist {
+            background-color: var(--primary-100);
+            color: var(--primary-600);
+        }
+
+        .summary-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .investment-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .investment-item:last-child {
+            border-bottom: none;
+        }
+
+        .investment-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .investment-details h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .investment-details p {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .investment-amount {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--success-600);
+            margin-left: auto;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-500);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .companies-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+            
+            .investment-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .main-container {
+                padding: 1.5rem;
+            }
+            
+            .hero-banner {
+                padding: 2rem 1.5rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-stats {
+                gap: 2rem;
+            }
+            
+            .companies-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .company-metrics {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+            }
+            
+            .user-info {
+                display: none;
+            }
+
+            .dropdown-menu {
+                right: -1rem;
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .company-card {
+                padding: 1rem;
+            }
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mt-2 { margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER & NAVIGATION ===== -->
+    <header class="header">
+        <nav class="nav-container">
+            <!-- Logo -->
+            <a href="#" class="logo">CapitalRaise</a>
+            
+            <!-- Main Navigation -->
+            <ul class="nav-menu">
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Browse Companies</a></li>
+                <li><a href="#">My Investments</a></li>
+                <li><a href="#">Messages</a></li>
+            </ul>
+            
+            <!-- Right Side Navigation -->
+            <div class="nav-right">
+                <!-- Notification Bell -->
+                <div class="notification-bell">
+                    <span>🔔</span>
+                    <span class="notification-badge">3</span>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="user-profile-container">
+                    <input type="checkbox" id="dropdown-toggle" class="dropdown-toggle">
+                    <label for="dropdown-toggle" class="user-profile">
+                       <div class="user-avatar">
+                            {{lastname}}
+                        </div>
+                        <div class="user-info">
+                            <h4>{{lastname}}</h4>
+                            <p>{{email}}</p>
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </label>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-user-info">
+                                <div class="dropdown-avatar">
+                                    AM
+                                </div>
+                                <div class="dropdown-user-details">
+                                    <h4>{{lastname}}</h4>
+                                    <p>{{email}}</p>
+                                    <div class="user-status">● Active {{ustype}}</div>
+                                </div>
+                            </div>
+                        </div> 
+                        
+                        <div class="dropdown-items">
+                            <a href="{% url "profile" %}" class="dropdown-item">
+                                <span class="dropdown-icon">👤</span>
+                                My Profile
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">💼</span>
+                                My Portfolio
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">⚙️</span>
+                                Account Settings
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">💳</span>
+                                Billing & Payments
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">📊</span>
+                                Investment History
+                            </a>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">❓</span>
+                                Help & Support
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">📋</span>
+                                Terms & Privacy
+                            </a>
+                            
+                            <div class="dropdown-divider"></div>
+                            
+                            <!-- Django: <form method="post" action="{% url 'logout' %}"> -->
+                            <a href="{% url "login" %}" class="dropdown-item danger">
+                                <span class="dropdown-icon">🚪</span>
+                                Sign Out
+                            </a>
+                            <!-- Django: </form> -->
+                        </div>
+                    </div>
+                    
+                    <!-- Overlay to close dropdown when clicking outside -->
+                    <label for="dropdown-toggle" class="dropdown-overlay"></label>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-container">
+        <!-- Hero Banner -->
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1 class="hero-title">Discover Investment Opportunities</h1>
+                <p class="hero-subtitle">Connect with innovative companies seeking funding and build your investment portfolio with vetted opportunities.</p>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="value"><!-- Django: {{ active_companies_count }} -->247</span>
+                        <span class="label">Companies Seeking Funding</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="value"><!-- Django: {{ total_capital_needed }} -->$84.2M</span>
+                        <span class="label">Total Capital Needed</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="value"><!-- Django: {{ successful_raises }} -->156</span>
+                        <span class="label">Successful Raises This Year</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Companies Section -->
+        <section>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Featured Investment Opportunities</h2>
+                    <p class="section-subtitle">Handpicked companies with high growth potential</p>
+                </div>
+                <a href="#" class="view-all-link">View All Companies →</a>
+            </div>
+
+            <div class="companies-grid">
+                <!-- Company Card 1 -->
+                <div class="company-card">
+                    <div class="verification-badge">Verified</div>
+                    <div class="company-header">
+                        <div class="company-logo">🚀</div>
+                        <div class="company-info">
+                            <h3><!-- Django: {{ company.name }} -->TechFlow Solutions</h3>
+                            <span class="industry-tag tech"><!-- Django: {{ company.industry }} -->Technology</span>
+                        </div>
+                    </div>
+                    
+                    <div class="funding-progress">
+                        <div class="progress-header">
+                            <span class="progress-amount"><!-- Django: {{ company.raised_amount }} -->$1.2M raised</span>
+                            <span class="progress-percentage"><!-- Django: {{ company.progress_percentage }} -->60%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                        <div class="progress-target">of <!-- Django: {{ company.target_amount }} -->$2.0M goal</div>
+                    </div>
+
+                    <div class="company-metrics">
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.valuation }} -->$8M</span>
+                            <div class="metric-label">Valuation</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.equity_offered }} -->15%</span>
+                            <div class="metric-label">Equity Offered</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.days_left }} -->23 days</span>
+                            <div class="metric-label">Remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="deadline-warning">
+                        Funding closes in 23 days - Limited time remaining
+                    </div>
+
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary">💰 Invest Now</a>
+                        <a href="#" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Company Card 2 -->
+                <div class="company-card">
+                    <div class="verification-badge">Verified</div>
+                    <div class="company-header">
+                        <div class="company-logo">💳</div>
+                        <div class="company-info">
+                            <h3><!-- Django: {{ company.name }} -->FinanceAI Pro</h3>
+                            <span class="industry-tag fintech"><!-- Django: {{ company.industry }} -->FinTech</span>
+                        </div>
+                    </div>
+                    
+                    <div class="funding-progress">
+                        <div class="progress-header">
+                            <span class="progress-amount"><!-- Django: {{ company.raised_amount }} -->$750K raised</span>
+                            <span class="progress-percentage"><!-- Django: {{ company.progress_percentage }} -->50%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50%"></div>
+                        </div>
+                        <div class="progress-target">of <!-- Django: {{ company.target_amount }} -->$1.5M goal</div>
+                    </div>
+
+                    <div class="company-metrics">
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.valuation }} -->$12M</span>
+                            <div class="metric-label">Valuation</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.equity_offered }} -->12%</span>
+                            <div class="metric-label">Equity Offered</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.days_left }} -->45 days</span>
+                            <div class="metric-label">Remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary">💰 Invest Now</a>
+                        <a href="#" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Company Card 3 -->
+                <div class="company-card">
+                    <div class="verification-badge">Verified</div>
+                    <div class="company-header">
+                        <div class="company-logo">🏥</div>
+                        <div class="company-info">
+                            <h3><!-- Django: {{ company.name }} -->HealthTech Innovations</h3>
+                            <span class="industry-tag healthcare"><!-- Django: {{ company.industry }} -->Healthcare</span>
+                        </div>
+                    </div>
+                    
+                    <div class="funding-progress">
+                        <div class="progress-header">
+                            <span class="progress-amount"><!-- Django: {{ company.raised_amount }} -->$2.1M raised</span>
+                            <span class="progress-percentage"><!-- Django: {{ company.progress_percentage }} -->70%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 70%"></div>
+                        </div>
+                        <div class="progress-target">of <!-- Django: {{ company.target_amount }} -->$3.0M goal</div>
+                    </div>
+
+                    <div class="company-metrics">
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.valuation }} -->$25M</span>
+                            <div class="metric-label">Valuation</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.equity_offered }} -->10%</span>
+                            <div class="metric-label">Equity Offered</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.days_left }} -->12 days</span>
+                            <div class="metric-label">Remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="deadline-warning">
+                        Funding closes in 12 days - Act fast!
+                    </div>
+
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary">💰 Invest Now</a>
+                        <a href="#" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Company Card 4 -->
+                <div class="company-card">
+                    <div class="verification-badge">Verified</div>
+                    <div class="company-header">
+                        <div class="company-logo">🌱</div>
+                        <div class="company-info">
+                            <h3><!-- Django: {{ company.name }} -->GreenEnergy Solutions</h3>
+                            <span class="industry-tag energy"><!-- Django: {{ company.industry }} -->Clean Energy</span>
+                        </div>
+                    </div>
+                    
+                    <div class="funding-progress">
+                        <div class="progress-header">
+                            <span class="progress-amount"><!-- Django: {{ company.raised_amount }} -->$3.2M raised</span>
+                            <span class="progress-percentage"><!-- Django: {{ company.progress_percentage }} -->80%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 80%"></div>
+                        </div>
+                        <div class="progress-target">of <!-- Django: {{ company.target_amount }} -->$4.0M goal</div>
+                    </div>
+
+                    <div class="company-metrics">
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.valuation }} -->$35M</span>
+                            <div class="metric-label">Valuation</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.equity_offered }} -->8%</span>
+                            <div class="metric-label">Equity Offered</div>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value"><!-- Django: {{ company.days_left }} -->30 days</span>
+                            <div class="metric-label">Remaining</div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary">💰 Invest Now</a>
+                        <a href="#" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Investment Summary Section -->
+        <section class="investment-summary">
+            <!-- Recent Investments -->
+            <div class="summary-card">
+                <div class="summary-header">
+                    <div class="summary-icon investments">💼</div>
+                    <h3 class="summary-title">My Recent Investments</h3>
+                </div>
+                
+                <!-- Django: {% if user_investments %} -->
+                <div class="investment-item">
+                    <div class="investment-logo">🚀</div>
+                    <div class="investment-details">
+                        <h4><!-- Django: {{ investment.company_name }} -->TechFlow Solutions</h4>
+                        <p><!-- Django: {{ investment.date }} -->Invested 5 days ago</p>
+                    </div>
+                    <div class="investment-amount"><!-- Django: {{ investment.amount }} -->$25,000</div>
+                </div>
+                
+                <div class="investment-item">
+                    <div class="investment-logo">💳</div>
+                    <div class="investment-details">
+                        <h4><!-- Django: {{ investment.company_name }} -->FinanceAI Pro</h4>
+                        <p><!-- Django: {{ investment.date }} -->Invested 2 weeks ago</p>
+                    </div>
+                    <div class="investment-amount"><!-- Django: {{ investment.amount }} -->$15,000</div>
+                </div>
+                <!-- Django: {% else %} -->
+                <!-- 
+                <div class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <p>No investments yet. Start building your portfolio!</p>
+                </div>
+                -->
+                <!-- Django: {% endif %} -->
+            </div>
+
+            <!-- Watchlisted Companies -->
+            <div class="summary-card">
+                <div class="summary-header">
+                    <div class="summary-icon watchlist">👁️</div>
+                    <h3 class="summary-title">My Watchlist</h3>
+                </div>
+                
+                <!-- Django: {% if watchlisted_companies %} -->
+                <div class="investment-item">
+                    <div class="investment-logo">🏥</div>
+                    <div class="investment-details">
+                        <h4><!-- Django: {{ company.name }} -->HealthTech Innovations</h4>
+                        <p><!-- Django: {{ company.funding_status }} -->70% funded • 12 days left</p>
+                    </div>
+                </div>
+                
+                <div class="investment-item">
+                    <div class="investment-logo">🌱</div>
+                    <div class="investment-details">
+                        <h4><!-- Django: {{ company.name }} -->GreenEnergy Solutions</h4>
+                        <p><!-- Django: {{ company.funding_status }} -->80% funded • 30 days left</p>
+                    </div>
+                </div>
+                
+                <div class="investment-item">
+                    <div class="investment-logo">🤖</div>
+                    <div class="investment-details">
+                        <h4><!-- Django: {{ company.name }} -->AI Robotics Corp</h4>
+                        <p><!-- Django: {{ company.funding_status }} -->35% funded • 60 days left</p>
+                    </div>
+                </div>
+                <!-- Django: {% else %} -->
+                <!-- 
+                <div class="empty-state">
+                    <div class="empty-state-icon">⭐</div>
+                    <p>No companies in your watchlist yet.</p>
+                </div>
+                -->
+                <!-- Django: {% endif %} -->
+            </div>
+        </section>
+    </main>
+
+    {% comment %} <script>
+        // Handle logout functionality
+        function handleLogout() {
+            if (confirm('Are you sure you want to sign out?')) {
+                // Django: In a real Django app, this would submit a logout form
+                // For demo purposes, we'll just show an alert
+                alert('Logout functionality would be implemented here with Django authentication');
+                
+                // In Django, you would do:
+                // window.location.href = "{% url 'logout' %}";
+                // Or submit a form with CSRF token
+            }
+        }
+
+        // Close dropdown when clicking outside (fallback for browsers that don't support :focus-within properly)
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.user-profile-container');
+            const toggle = document.getElementById('dropdown-toggle');
+            
+            if (!dropdown.contains(event.target)) {
+                toggle.checked = false;
+            }
+        });
+
+        // Close dropdown when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const toggle = document.getElementById('dropdown-toggle');
+                toggle.checked = false;
+            }
+        });
+    </script> {% endcomment %}
+</body>
+</html>
