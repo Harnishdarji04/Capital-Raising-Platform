@@ -1,0 +1,7 @@
+python -m django (to check django installed or not)
+python -m pip install virtualenv
+python -m virtualenv venv
+venv/Scripts/activate
+
+
+python manage.py runserver
