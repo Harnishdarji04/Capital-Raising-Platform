@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{detail.company_name}}</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background-color: #f8fafc;
+        }
+
+        /* CSS Custom Properties */
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #f8fafc;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #dc2626;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --light-gray: #f1f5f9;
+            --medium-gray: #e2e8f0;
+            --risk-low: #10b981;
+            --risk-medium: #f59e0b;
+            --risk-high: #dc2626;
+            --tech-color: #3b82f6;
+            --healthcare-color: #10b981;
+            --fintech-color: #8b5cf6;
+            --ecommerce-color: #f59e0b;
+        }
+
+        /* Header Styles */
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .back-button {
+            padding: 0.5rem 1rem;
+            background: var(--light-gray);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .back-button:hover {
+            background: var(--medium-gray);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 70% 30%;
+            gap: 3rem;
+        }
+
+        /* Left Column */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Company Header */
+        .company-header {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .company-header-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .company-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 0.75rem;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+        .company-info {
+            flex: 1;
+        }
+
+        .company-info h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .company-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .industry-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .industry-technology {
+            background: var(--tech-color);
+        }
+
+        .industry-healthcare {
+            background: var(--healthcare-color);
+        }
+
+        .industry-fintech {
+            background: var(--fintech-color);
+        }
+
+        .industry-ecommerce {
+            background: var(--ecommerce-color);
+        }
+
+        .verification-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--success-color);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .company-tagline {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        /* Funding Status */
+        .funding-status {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .funding-status h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-section {
+            margin-bottom: 2rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .amount-raised {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        .funding-goal {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--light-gray);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), #34d399);
+            transition: width 0.3s ease;
+        }
+
+        .progress-percentage {
+            text-align: right;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .metric-card {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .deadline-countdown {
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+
+        /* Detailed Sections */
+        .detail-section {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .detail-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .detail-section h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        .detail-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .company-origin {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 0.5rem;
+        }
+
+        .origin-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .origin-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .origin-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Financial Table */
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .financial-table th,
+        .financial-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .financial-table th {
+            background: var(--light-gray);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .financial-table td {
+            color: var(--text-secondary);
+        }
+
+        .financial-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .growth-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .growth-card {
+            background: var(--success-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .growth-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .growth-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        /* Risk Assessment */
+        .risk-assessment {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .risk-meter-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--light-gray);
+            border-radius: 0.5rem;
+        }
+
+        .risk-meter {
+            display: flex;
+            gap: 4px;
+        }
+
+        .risk-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--medium-gray);
+            transition: background 0.3s;
+        }
+
+        .risk-dot.active.low {
+            background: var(--risk-low);
+        }
+
+        .risk-dot.active.medium {
+            background: var(--risk-medium);
+        }
+
+        .risk-dot.active.high {
+            background: var(--risk-high);
+        }
+
+        .risk-info {
+            flex: 1;
+        }
+
+        .risk-level {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .risk-level.low {
+            color: var(--risk-low);
+        }
+
+        .risk-level.medium {
+            color: var(--risk-medium);
+        }
+
+        .risk-level.high {
+            color: var(--risk-high);
+        }
+
+        .risk-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .risk-factors {
+            list-style: none;
+        }
+
+        .risk-factors li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--light-gray);
+            border-radius: 0.375rem;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        /* Right Column */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-section {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-section h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Document Cards */
+        .document-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .document-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .document-card:hover {
+            background: var(--light-gray);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .document-size {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .download-icon {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+
+        /* Investment CTA */
+        .investment-cta {
+            text-align: center;
+        }
+
+        .invest-button {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .invest-button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-top: 1rem;
+        }
+
+        .faq-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-question {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--light-gray);
+            border: none;
+            border-radius: 0.375rem;
+            text-align: left;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+            background: var(--medium-gray);
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 0.375rem 0.375rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .faq-item:target .faq-answer {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .legal-disclaimer {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+        }
+
+        .report-button {
+            padding: 0.5rem 1rem;
+            background: var(--danger-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .report-button:hover {
+            background: #b91c1c;
+        }
+
+        /* Print Styles */
+        @media print {
+            .header,
+            .footer,
+            .investment-cta,
+            .faq-section {
+                display: none;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+                max-width: none;
+                padding: 1rem;
+            }
+
+            .detail-section,
+            .funding-status,
+            .company-header,
+            .sidebar-section {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                margin-bottom: 1rem;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 65% 35%;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .company-header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .company-logo {
+                align-self: center;
+            }
+
+            .key-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .company-header,
+            .funding-status,
+            .detail-section,
+            .sidebar-section {
+                padding: 1rem;
+            }
+
+            .company-info h1 {
+                font-size: 2rem;
+            }
+
+            .key-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .company-origin {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Expandable Sections */
+        .expandable-section {
+            margin-top: 1rem;
+        }
+
+        .expand-toggle {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--light-gray);
+            border: none;
+            border-radius: 0.375rem;
+            text-align: left;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .expand-toggle:hover {
+            background: var(--medium-gray);
+        }
+
+        .expand-content {
+            display: none;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 0.375rem 0.375rem;
+        }
+
+        .expandable-section:target .expand-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">CapitalRaise</a>
+            <a href="{% url "pdashboard" %}" class="back-button">← Back to Listings</a>
+            <div class="user-profile">
+                <div class="avatar" style="background-color:green"></div>
+                <span>{{lastname}}</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Column (70% width) -->
+        <div class="left-column">
+            <!-- Company Header -->
+            <section class="company-header">
+                <div class="company-header-content">
+                    <div class="company-logo">
+                        <!-- DJANGO: Company Logo -->
+                        <img src="{{detail.company_logo.url}}" alt="<!-- DJANGO: COMPANY_NAME --> Logo" >
+                        <div style="display: none;"><!-- DJANGO: COMPANY_INITIALS --></div>
+                    </div>
+                    <div class="company-info">
+                        <h1>{{detail.company_name}}</h1>
+                        <div class="company-meta">
+                            <span>Industry:
+                                {{detail.industry}}
+                            </span>
+                            <div class="verification-badge">
+                                ✓ Verified Company
+                            </div>
+                        </div>
+                        <p class="company-tagline">
+                            Founded IN :
+                            {{detail.year_founded}}
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Funding Status -->
+            <section class="funding-status">
+                <h2>Funding Progress</h2>
+                <div class="progress-section">
+                    <div class="progress-info">
+                        <div class="amount-raised">Fund Raising:
+                            ${{detail.funding_goal}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-metrics">
+                    <div class="metric-card">
+                        <div class="metric-label">Company Valuation</div>
+                        <div class="metric-value">${{detail.valuation}}</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Equity Offered</div>
+                        <div class="metric-value">{{detail.equity_offered}}%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Minimum Investment</div>
+                        <div class="metric-value">${{detail.min_investment}}</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Company Story -->
+            <section class="detail-section">
+                <h2>Company Story</h2>
+                
+                <div class="company-origin">
+                    <div class="origin-item">
+                        <div class="origin-label">Founded</div>
+                        <div class="origin-value">{{detail.year_founded}}</div>
+                    </div>
+                    <div class="origin-item">
+                        <div class="origin-label">Location</div>
+                        <div class="origin-value">{{detail.company_origin}}</div>
+                    </div>
+                    <div class="origin-item">
+                        <div class="origin-label">Industry</div>
+                        <div class="origin-value">{{detail.industry}}</div>
+                    </div>
+                </div>
+
+                <h3>About the Company</h3>
+                <p>{{detail.description}}
+                </p>
+
+                <h3>Problem & Solution</h3>
+                <p>{{detail.problem_solution}}
+                </p>
+
+                <h3>Competitive Advantage</h3>
+                <p>{{detail.competitive_advantage}}
+                </p>
+
+                <div class="expandable-section" id="team-section">
+                    <a href="#team-section" class="expand-toggle">Disclaimer</a>
+                    <div class="expand-content">
+                        <p>Disclaimer: The information provided in this company profile is for general informational purposes only. Investment in startups involves risks, including the potential loss of capital. Please review the full terms and conditions before making any financial decisions.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Financial Performance -->
+            <section class="detail-section">
+                <h2>Financial Performance</h2>
+                
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Revenue</th>
+                            <th>Profit/Loss</th>
+                            <th>Assets</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- DJANGO: Financial Data Loop -->
+                        <tr>
+                            <td>2023</td>
+                            <td>${{detail.revenue_2023}}</td>
+                            <td>${{detail.profit_2023}}</td>
+                            <td>${{detail.assets_2023}}</td>
+                        </tr>
+                        <tr>
+                            <td>2022</td>
+                            <td>${{detail.revenue_2022}}</td>
+                            <td>${{detail.profit_2022}}</td>
+                            <td>${{detail.assets_2022}}</td>
+                        </tr>
+                        <tr>
+                            <td>2021</td>
+                            <td>${{detail.revenue_2021}}</td>
+                            <td>${{detail.profit_2021}}</td>
+                            <td>${{detail.assets_2021}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Risk Assessment -->
+            <section class="risk-assessment">
+                <h2>Risk Factors</h2>
+                <ul class="risk-factors">
+                    {% if detail %}
+                        <li>{{detail.risk_factors}}</li>
+                    {% endif %} 
+                </ul>
+            </section>
+        </div>
+
+        <!-- Right Column (30% width) -->
+        <div class="right-column">
+            <!-- Documents Section -->
+            <section class="sidebar-section">
+                <h3>Company Documents</h3>
+                <div class="document-grid">
+                    <!-- DJANGO: Document Loop -->
+                    <a href="{{detail.pitch_deck.url}}" class="document-card" download="TechCorp-Pitch-Deck.pdf">
+                        <div class="document-icon">📄</div>
+                        <div class="document-info">
+                            <div class="document-name">Pitch Deck</div>
+                            <div class="document-size">2.4 MB • PDF</div>
+                        </div>
+                        <div class="download-icon">⬇</div>
+                    </a>
+
+                    <a href="{{detail.financial_statements.url}}" class="document-card" download="TechCorp-Financial-Statements.pdf">
+                        <div class="document-icon">📊</div>
+                        <div class="document-info">
+                            <div class="document-name">Financial Statements</div>
+                            <div class="document-size">1.8 MB • PDF</div>
+                        </div>
+                        <div class="download-icon">⬇</div>
+                    </a>
+
+                    <a href="{{detail.legal_documents.url}}" class="document-card" download="TechCorp-Legal-Documents.pdf">
+                        <div class="document-icon">⚖️</div>
+                        <div class="document-info">
+                            <div class="document-name">Legal Documents</div>
+                            <div class="document-size">3.2 MB • PDF</div>
+                        </div>
+                        <div class="download-icon">⬇</div>
+                    </a>
+
+                    <a href="{{detail.additional_materials.url}}" class="document-card" download="TechCorp-Additional-Materials.pdf">
+                        <div class="document-icon">📎</div>
+                        <div class="document-info">
+                            <div class="document-name">Additional Materials</div>
+                            <div class="document-size">1.5 MB • PDF</div>
+                        </div>
+                        <div class="download-icon">⬇</div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Investment CTA -->
+            <section class="sidebar-section investment-cta">
+                <h3>Ready to Invest?</h3>
+                <a href="{% url "invest" %}"><button class="invest-button">
+                    Invest Now
+                </button></a>
+                <div class="faq-section">
+                    <div class="faq-item" id="faq1">
+                        <a href="#faq1" class="faq-question">How does the investment process work?</a>
+                        <div class="faq-answer">
+                            After clicking "Invest Now", you'll be guided through our secure investment process. You'll need to verify your identity, specify your investment amount, and complete the transaction through our platform.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" id="faq2">
+                        <a href="#faq2" class="faq-question">What are the fees?</a>
+                        <div class="faq-answer">
+                            CapitalConnect charges a 2% platform fee on successful investments. There are no upfront costs or hidden fees for investors.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" id="faq3">
+                        <a href="#faq3" class="faq-question">When will I receive returns?</a>
+                        <div class="faq-answer">
+                            Returns depend on the company's performance and exit strategy. Most investments are long-term (3-7 years) with returns realized through acquisition, IPO, or dividend distributions.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="legal-disclaimer">
+                <strong>Investment Risk Warning:</strong> All investments carry risk of loss. Past performance does not guarantee future results. Only invest what you can afford to lose. This platform does not provide investment advice.
+            </div>
+            <a href="/report/<!-- DJANGO: COMPANY_ID -->" class="report-button">
+                Report Issue
+            </a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapitalRaise Dashboard</title>
+    <style>
+        /* ===== IMPORTS & RESET ===== */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-900: #1e3a8a;
+            
+            --success-500: #10b981;
+            --success-600: #059669;
+            
+            --warning-500: #f59e0b;
+            --warning-600: #d97706;
+            
+            --purple-500: #8b5cf6;
+            --purple-600: #7c3aed;
+            
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--gray-700);
+            line-height: 1.6;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        }
+
+        /* ===== GLASSMORPHISM UTILITIES ===== */
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .glass-dark {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 80px;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-menu a.active::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            border-radius: 1px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--success-500), var(--success-600));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .user-info p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .dropdown-arrow {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* ===== USER PROFILE DROPDOWN ===== */
+        .user-profile {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: var(--shadow-2xl);
+            min-width: 280px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: none;
+            border-right: none;
+            transform: rotate(45deg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .dropdown-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dropdown-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--success-500), var(--success-600));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dropdown-user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dropdown-name {
+            font-weight: 700;
+            color: var(--gray-800);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .dropdown-email {
+            color: var(--gray-600);
+            font-size: 0.85rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .dropdown-section {
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--gray-700);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--primary-600);
+        }
+
+        .dropdown-item-danger {
+            color: #dc2626;
+        }
+
+        .dropdown-item-danger:hover {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+        }
+
+        .dropdown-icon {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .dropdown-badge {
+            margin-left: auto;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            color: white;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 18px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 0.5rem 1.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                min-width: 260px;
+                right: -10px;
+            }
+            
+            .dropdown-menu::before {
+                right: 30px;
+            }
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem;
+        }
+
+        /* ===== WELCOME SECTION ===== */
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-text h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        .welcome-text p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-stat {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 120px;
+        }
+
+        .quick-stat .value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-stat .label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        /* ===== SUMMARY CARDS ===== */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+        }
+
+        .summary-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: white;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+        }
+
+        .card-icon.investments {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+        }
+
+        .card-icon.projects {
+            background: linear-gradient(135deg, var(--success-500), var(--success-600));
+        }
+
+        .card-icon.funds {
+            background: linear-gradient(135deg, var(--warning-500), var(--warning-600));
+        }
+
+        .card-icon.roi {
+            background: linear-gradient(135deg, var(--purple-500), var(--purple-600));
+        }
+
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .card-label {
+            color: var(--gray-600);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .card-change {
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-change.positive {
+            color: var(--success-600);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .card-change.negative {
+            color: #dc2626;
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        .card-change::before {
+            content: '↗';
+            font-size: 1rem;
+        }
+
+        .card-change.negative::before {
+            content: '↘';
+        }
+
+        /* ===== DASHBOARD GRID ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* ===== CHART SECTION ===== */
+        .chart-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .chart-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            margin-top: 0.25rem;
+        }
+
+        .chart-period {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--gray-100);
+            padding: 0.25rem;
+            border-radius: 12px;
+        }
+
+        .period-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--gray-600);
+        }
+
+        .period-btn.active,
+        .period-btn:hover {
+            background: white;
+            color: var(--primary-600);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Enhanced Chart */
+        .chart-container {
+            height: 350px;
+            position: relative;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .chart-grid {
+            position: absolute;
+            inset: 2rem;
+            background-image: 
+                linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+            background-size: 40px 30px;
+        }
+
+        .chart-line {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            right: 2rem;
+            height: calc(100% - 4rem);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+        }
+
+        .chart-points {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            right: 2rem;
+            height: calc(100% - 4rem);
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+        }
+
+        .chart-point {
+            width: 12px;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            border-radius: 6px;
+            position: relative;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .chart-point:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chart-point::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border: 3px solid var(--primary-500);
+            border-radius: 50%;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chart-point:nth-child(1) { height: 35%; }
+        .chart-point:nth-child(2) { height: 55%; }
+        .chart-point:nth-child(3) { height: 40%; }
+        .chart-point:nth-child(4) { height: 75%; }
+        .chart-point:nth-child(5) { height: 65%; }
+        .chart-point:nth-child(6) { height: 85%; }
+        .chart-point:nth-child(7) { height: 90%; }
+        .chart-point:nth-child(8) { height: 80%; }
+
+        /* ===== RECENT ACTIVITY ===== */
+        .recent-activity {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .activity-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .view-all {
+            color: var(--primary-600);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .view-all:hover {
+            background: var(--primary-50);
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--gray-100);
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item:hover {
+            background: var(--gray-50);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 12px;
+        }
+
+        .activity-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .activity-icon.investment {
+            background: linear-gradient(135deg, var(--success-500), var(--success-600));
+        }
+
+        .activity-icon.project {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+        }
+
+        .activity-icon.message {
+            background: linear-gradient(135deg, var(--warning-500), var(--warning-600));
+        }
+
+        .activity-icon.report {
+            background: linear-gradient(135deg, var(--purple-500), var(--purple-600));
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 0.95rem;
+            color: var(--gray-700);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .activity-amount {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--success-600);
+        }
+
+        /* ===== QUICK ACTIONS ===== */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--gray-700);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            color: white;
+            border-color: transparent;
+        }
+
+        .action-btn.primary:hover {
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .action-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .main-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .quick-stats {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .welcome-text h1 {
+                font-size: 2rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .welcome-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .summary-card {
+                padding: 1.5rem;
+            }
+            
+            .chart-section,
+            .recent-activity {
+                padding: 1.5rem;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .summary-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .summary-card:nth-child(1) { animation-delay: 0.1s; }
+        .summary-card:nth-child(2) { animation-delay: 0.2s; }
+        .summary-card:nth-child(3) { animation-delay: 0.3s; }
+        .summary-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER & NAVIGATION ===== -->
+    <header class="header">
+        <nav class="nav-container">
+            <!-- Logo -->
+            <a href="#" class="logo">CapitalRaise</a>
+            
+            <!-- Main Navigation -->
+            <ul class="nav-menu">
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="{% url "pdashboard" %}">Projects</a></li>
+                <li><a href="{% url "investment" %}">Investments</a></li>
+                <li><a href="#">Messages</a></li>
+                <li><a href="#">Reports</a></li>
+            </ul>
+            
+            <!-- Right Side Navigation -->
+            <div class="nav-right">
+                
+                <!-- User Profile -->
+                <div class="user-profile" id="userProfileDropdown">
+                    <div class="user-avatar">
+                    </div>
+                    <div class="user-info">
+                        <h4>{{lastname}}</h4>
+                        <p>Premium {{ustype}}</p>
+                    </div>
+                    <span class="dropdown-arrow">▼</span>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-user-info">
+                                <div class="dropdown-name">
+                                   {{lastname}}
+                                </div>
+                                <div class="dropdown-email">
+                                    {{email}}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <div class="dropdown-section">
+                            <a href="{% url "profile" %}" class="dropdown-item">
+                                <span class="dropdown-icon">👤</span>
+                                <span>View Profile</span>
+                            </a>
+                            <a href="{% url "investment" %}" class="dropdown-item">
+                                <span class="dropdown-icon">💼</span>
+                                <span>My Portfolio</span>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">📊</span>
+                                <span>Analytics Dashboard</span>
+                            </a>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <div class="dropdown-section">
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">💳</span>
+                                <span>Billing & Plans</span>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span class="dropdown-icon">❓</span>
+                                <span>Help & Support</span>
+                            </a>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <div class="dropdown-section">
+                            <a href="{% url "login" %}" class="dropdown-item dropdown-item-danger">
+                                <span class="dropdown-icon">🚪</span>
+                                <span>Sign Out</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <div class="welcome-text">
+                    <h1>Welcome ,{{lastname}}</h1>
+                    <p>Thank Your For Choosing Us </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Cards -->
+        <section class="summary-cards">
+            <div class="summary-card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-value"><!-- {{ total_investments }} -->₹2,847,392</div>
+                        <div class="card-label">Total Investments</div>
+                    </div>
+                    <div class="card-icon investments">💰</div>
+                </div>
+                <div class="card-change positive">12.8% from last month</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-value"><!-- {{ active_projects }} -->34</div>
+                        <div class="card-label">Active Projects</div>
+                    </div>
+                    <div class="card-icon projects">🚀</div>
+                </div>
+                <div class="card-change positive">6 new this week</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-value"><!-- {{ funds_raised }} -->₹1,492,156</div>
+                        <div class="card-label">Funds Raised</div>
+                    </div>
+                    <div class="card-icon funds">🎯</div>
+                </div>
+                <div class="card-change positive">23.4% above target</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-value"><!-- {{ roi_percentage }} -->24.7%</div>
+                        <div class="card-label">Average ROI</div>
+                    </div>
+                    <div class="card-icon roi">📈</div>
+                </div>
+                <div class="card-change positive">4.2% this quarter</div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Recent Activity -->
+            <section class="recent-activity">
+                <div class="activity-header">
+                    <h3 class="activity-title">Recent Investment</h3>
+                    {% if hs %} 
+                    {% for x in hs %}
+                    <h4> Your Recent investment is {{x.companyname}}</h4>
+                    {% endfor %}
+                    {% else %}
+                        <h4>No recent investment</h4>
+                    {% endif %}
+
+                </div>
+                <ul class="activity-list">
+                    <!-- {% for activity in recent_activities %} -->
+                    <li class="activity-item">
+                        <div class="activity-icon investment">💵</div>
+                        <div class="activity-content">
+                            <div class="activity-text">Investment in TechStart Pro completed</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                        <div class="activity-amount">+₹50,000</div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon project">🚀</div>
+                        <div class="activity-content">
+                            <div class="activity-text">GreenEnergy Fund reached 85% funding</div>
+                            <div class="activity-time">4 hours ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon message">💬</div>
+                        <div class="activity-content">
+                            <div class="activity-text">New message from Sarah Chen</div>
+                            <div class="activity-time">6 hours ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon report">📊</div>
+                        <div class="activity-content">
+                            <div class="activity-text">Q4 performance report generated</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon investment">💰</div>
+                        <div class="activity-content">
+                            <div class="activity-text">Dividend payment received</div>
+                            <div class="activity-time">2 days ago</div>
+                        </div>
+                        <div class="activity-amount">+₹ 12,500</div>
+                    </li>
+                    <!-- {% endfor %} -->
+                </ul>
+            </section>
+        </div>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <a href="{% url "submitcompany" %}" class="action-btn primary">
+                <span class="action-icon">🚀</span>
+                <div class="action-title">Launch New Project</div>
+                <div class="action-desc">Start your next funding campaign with our advanced tools</div>
+            </a>
+            <a href="{% url "pdashboard" %}" class="action-btn">
+                <span class="action-icon">💰</span>
+                <div class="action-title">Add Investment</div>
+                <div class="action-desc">Increase your portfolio with new investment opportunities</div>
+            </a>
+            <a href="{% url "network" %}" class="action-btn">
+                <span class="action-icon">👥</span>
+                <div class="action-title">Network Hub</div>
+                <div class="action-desc">Connect with investors and entrepreneurs globally</div>
+            </a>
+        </section>
+    </main>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const userProfile = document.getElementById('userProfileDropdown');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const dropdownArrow = userProfile.querySelector('.dropdown-arrow');
+    
+    // Toggle dropdown on click
+    userProfile.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+        
+        // Rotate arrow
+        if (dropdownMenu.classList.contains('show')) {
+            dropdownArrow.style.transform = 'rotate(180deg)';
+        } else {
+            dropdownArrow.style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!userProfile.contains(e.target)) {
+            dropdownMenu.classList.remove('show');
+            dropdownArrow.style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    // Close dropdown when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            dropdownMenu.classList.remove('show');
+            dropdownArrow.style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    // Prevent dropdown from closing when clicking inside it
+    dropdownMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+});
+</script>
+</body>
+</html>

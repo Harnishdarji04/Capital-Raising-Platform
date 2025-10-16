@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - CapitalRaise</title>
+    <style>
+        /* ===== CSS RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Palette */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #f8fafc;
+            --accent: #16a34a;
+            --accent-light: #22c55e;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --text-light: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --white: #ffffff;
+            --danger: #dc2626;
+            --warning: #f59e0b;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+            background-color: var(--secondary);
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* ===== HEADER SECTION ===== */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--spacing-xl);
+            height: 72px;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo::before {
+            content: '💰';
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-xl);
+        }
+
+        .nav-menu a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .back-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .notification-icon {
+            position: relative;
+            padding: var(--spacing-sm);
+            border-radius: 8px;
+            background-color: var(--border-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-icon:hover {
+            background-color: var(--border);
+            transform: translateY(-1px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: var(--danger);
+            color: var(--white);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .user-avatar-small:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 30% 70%;
+            gap: var(--spacing-xl);
+            align-items: start;
+        }
+
+        /* ===== LEFT COLUMN - PROFILE CARD ===== */
+        .profile-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: sticky;
+            top: 100px;
+        }
+
+        .profile-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 0 auto var(--spacing-lg);
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .profile-title {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+
+        .verification-badge {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .verification-badge::before {
+            content: '✓';
+            font-weight: 700;
+        }
+
+        .profile-bio {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: var(--spacing-lg) 0;
+            text-align: left;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+            padding: var(--spacing-lg) 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-top: var(--spacing-xs);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--text-gray);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .edit-profile-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .edit-profile-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== RIGHT COLUMN - DETAILED SECTIONS ===== */
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+        }
+
+        .content-section {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .section-subtitle {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-top: var(--spacing-xs);
+        }
+
+        /* ===== INVESTMENT ACTIVITY SECTION ===== */
+        .investor-level {
+            background: var(--border-light);
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .level-title {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .level-percentage {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 4px;
+            width: 65%;
+            transition: width 0.3s ease;
+        }
+
+        .investments-grid {
+            display: grid;
+            gap: var(--spacing-md);
+        }
+
+        .investment-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            transition: all 0.3s ease;
+        }
+
+        .investment-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .investment-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .investment-info h4 {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .investment-date {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+
+        .investment-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-top: var(--spacing-xs);
+        }
+
+        .status-indicator {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .status-active {
+            background-color: rgba(22, 163, 74, 0.1);
+            color: var(--accent);
+        }
+
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        /* ===== VERIFICATION SECTION ===== */
+        .verification-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background: rgba(22, 163, 74, 0.05);
+            border: 1px solid rgba(22, 163, 74, 0.2);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .verification-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .verification-text h4 {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .verification-text p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .document-card {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .document-card:hover {
+            border-color: var(--primary);
+            background-color: rgba(37, 99, 235, 0.02);
+        }
+
+        .document-icon {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-light);
+        }
+
+        .document-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .document-status {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-lg);
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 60%;
+            right: -40%;
+            height: 2px;
+            background: var(--border);
+        }
+
+        .progress-step.completed::after {
+            background: var(--accent);
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .step-circle.completed {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            text-align: center;
+        }
+
+        /* ===== PREFERENCES SECTION ===== */
+        .preferences-grid {
+            display: grid;
+            gap: var(--spacing-xl);
+        }
+
+        .preference-group {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: var(--spacing-lg);
+        }
+
+        .preference-group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .preference-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .toggle-list {
+            display: grid;
+            gap: var(--spacing-md);
+        }
+
+        .toggle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+        }
+
+        .toggle-label {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .toggle-description {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            margin-top: var(--spacing-xs);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            padding: var(--spacing-xl) 0;
+            margin-top: var(--spacing-2xl);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-xl);
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1200px) {
+            .profile-layout {
+                grid-template-columns: 35% 65%;
+            }
+            
+            .profile-avatar {
+                width: 150px;
+                height: 150px;
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .profile-layout {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+            
+            .profile-card {
+                position: static;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .document-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .investment-details {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: var(--spacing-md);
+            }
+            
+            .header-container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            .profile-card {
+                padding: var(--spacing-lg);
+            }
+            
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+            }
+            
+            .profile-name {
+                font-size: 1.5rem;
+            }
+            
+            .profile-stats {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+            
+            .content-section {
+                padding: var(--spacing-lg);
+            }
+            
+            .progress-tracker {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            .progress-step::after {
+                display: none;
+            }
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .mb-0 { margin-bottom: 0; }
+        .mt-2 { margin-top: var(--spacing-sm); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER SECTION ===== -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <a href="#" class="logo">CapitalRaise</a>
+            
+            <!-- Navigation -->
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="{% url "dashboard" %}">Dashboard</a></li>
+                    <li><a href="{% url "investment" %}">Investments</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Right Side -->
+            <div class="header-right">
+                <!-- Notification Icon -->
+                <div class="notification-icon">
+                    <span>🔔</span>
+                    <span class="notification-badge">2</span>
+                </div>
+                
+                <!-- User Avatar -->
+                <div class="user-avatar-small">
+                    {{lastname}}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-container">
+        <div class="profile-layout">
+            <!-- ===== LEFT COLUMN - PROFILE CARD ===== -->
+            <aside class="profile-card">
+                <!-- Profile Avatar -->
+                <div class="profile-avatar">
+                    {{lastname}}
+                </div>
+                
+                <!-- User Info -->
+                <h1 class="profile-name">
+                    {{lastname}}
+                </h1>
+                <div class="profile-title">
+                    Accredited {{ustype}}
+                    <span class="verification-badge">Verified</span>
+                </div>
+                
+                <!-- Bio Section -->
+                <div class="profile-bio">
+                    <!-- DJANGO: {{ user.bio }} -->
+                    Experienced investor with a focus on technology startups and sustainable energy solutions. 15+ years in venture capital with a track record of successful exits.
+                </div>
+                
+                <!-- Social Links -->
+                <div class="social-links">
+                    <a href="#" class="social-link">📧</a>
+                    <a href="#" class="social-link">💼</a>
+                    <a href="#" class="social-link">🐦</a>
+                </div>
+            </aside>
+
+            <!-- ===== RIGHT COLUMN - DETAILED SECTIONS ===== -->
+            <div class="profile-content">
+                <!-- ===== INVESTMENT ACTIVITY SECTION ===== -->
+                <section class="content-section">
+                    <!-- Recent Investments -->
+                    <div class="investments-grid">
+                        <!-- DJANGO LOOP: {% for investment in recent_investments %} -->
+                        <article class="investment-card">
+                            <div class="investment-header">
+                                <div class="company-logo">🚀</div>
+                                <div class="investment-info">
+                                    <h4><!-- DJANGO: {{ investment.company_name }} -->TechFlow Solutions</h4>
+                                    <div class="investment-date"><!-- DJANGO: {{ investment.date }} -->Invested on March 15, 2024</div>
+                                </div>
+                                <div class="status-indicator status-active">Active</div>
+                            </div>
+                            <div class="investment-details">
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.amount }} -->$50,000</span>
+                                    <div class="detail-label">Investment</div>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.current_value }} -->$62,500</span>
+                                    <div class="detail-label">Current Value</div>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.return_percentage }} -->+25%</span>
+                                    <div class="detail-label">Return</div>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <article class="investment-card">
+                            <div class="investment-header">
+                                <div class="company-logo">🏥</div>
+                                <div class="investment-info">
+                                    <h4><!-- DJANGO: {{ investment.company_name }} -->HealthTech Innovations</h4>
+                                    <div class="investment-date"><!-- DJANGO: {{ investment.date }} -->Invested on February 8, 2024</div>
+                                </div>
+                                <div class="status-indicator status-pending">Pending</div>
+                            </div>
+                            <div class="investment-details">
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.amount }} -->$75,000</span>
+                                    <div class="detail-label">Investment</div>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.current_value }} -->$78,000</span>
+                                    <div class="detail-label">Current Value</div>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.return_percentage }} -->+4%</span>
+                                    <div class="detail-label">Return</div>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <article class="investment-card">
+                            <div class="investment-header">
+                                <div class="company-logo">🌱</div>
+                                <div class="investment-info">
+                                    <h4><!-- DJANGO: {{ investment.company_name }} -->GreenEnergy Solutions</h4>
+                                    <div class="investment-date"><!-- DJANGO: {{ investment.date }} -->Invested on January 22, 2024</div>
+                                </div>
+                                <div class="status-indicator status-active">Active</div>
+                            </div>
+                            <div class="investment-details">
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.amount }} -->$100,000</span>
+                                    <div class="detail-label">Investment</div>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.current_value }} -->$115,000</span>
+                                    <div class="detail-label">Current Value</div>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-value"><!-- DJANGO: {{ investment.return_percentage }} -->+15%</span>
+                                    <div class="detail-label">Return</div>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- DJANGO: {% endfor %} -->
+                    </div>
+                </section>
+                <!-- ===== PREFERENCES SECTION ===== -->
+                <section class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Preferences</h2>
+                            <p class="section-subtitle">Customize your account settings and notifications</p>
+                        </div>
+                    </div>
+                    
+                    <div class="preferences-grid">
+                        <!-- Notification Settings -->
+                        <div class="preference-group">
+                            <h3 class="preference-title">Notification Settings</h3>
+                            <div class="toggle-list">
+                                <div class="toggle-item">
+                                    <div>
+                                        <div class="toggle-label">Email Notifications</div>
+                                        <div class="toggle-description">Receive updates about your investments via email</div>
+                                    </div>
+                                    <div class="toggle-switch active"></div>
+                                </div>
+                                <div class="toggle-item">
+                                    <div>
+                                        <div class="toggle-label">SMS Alerts</div>
+                                        <div class="toggle-description">Get important alerts via text message</div>
+                                    </div>
+                                    <div class="toggle-switch"></div>
+                                </div>
+                                <div class="toggle-item">
+                                    <div>
+                                        <div class="toggle-label">Push Notifications</div>
+                                        <div class="toggle-description">Browser notifications for real-time updates</div>
+                                    </div>
+                                    <div class="toggle-switch active"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Investment Criteria -->
+                        <div class="preference-group">
+                            <h3 class="preference-title">Investment Criteria</h3>
+                            <div class="toggle-list">
+                                <div class="toggle-item">
+                                    <div>
+                                        <div class="toggle-label">Technology Sector</div>
+                                        <div class="toggle-description">Show opportunities in technology companies</div>
+                                    </div>
+                                    <div class="toggle-switch active"></div>
+                                </div>
+                                <div class="toggle-item">
+                                    <div>
+                                        <div class="toggle-label">Healthcare Sector</div>
+                                        <div class="toggle-description">Include healthcare and biotech investments</div>
+                                    </div>
+                                    <div class="toggle-switch active"></div>
+                                </div>
+                                <div class="toggle-item">
+                                    <div>
+                                        <div class="toggle-label">Clean Energy</div>
+                                        <div class="toggle-description">Sustainable and renewable energy projects</div>
+                                    </div>
+                                    <div class="toggle-switch active"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Communication Preferences -->
+                        <div class="preference-group">
+                            <h3 class="preference-title">Communication Preferences</h3>
+                            <div class="toggle-list">
+                                <div class="toggle-item">
+                                    <div>
+                                        <div class="toggle-label">Weekly Reports</div>
+                                        <div class="toggle-description">Receive weekly portfolio performance reports</div>
+                                    </div>
+                                    <div class="toggle-switch active"></div>
+                                </div>
+                                <div class="toggle-item">
+                                    <div>
+                                        <div class="toggle-label">Market Updates</div>
+                                        <div class="toggle-description">Get updates about market trends and opportunities</div>
+                                    </div>
+                                    <div class="toggle-switch"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2024 FundFlow. All rights reserved. | Professional Capital Raising Platform</p>
+        </div>
+    </footer>
+</body>
+</html>

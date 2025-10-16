@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Investments - CapitalRaise</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #0f172a;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+            min-height: 100vh;
+        }
+
+        /* CSS Custom Properties */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --premium-gradient: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --surface: #ffffff;
+            --surface-elevated: #fefefe;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --glow-primary: 0 0 20px rgba(59, 130, 246, 0.15);
+            --glow-success: 0 0 20px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Premium Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .nav-menu a:hover {
+            color: var(--text-primary);
+            background: rgba(59, 130, 246, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .nav-menu a.active {
+            color: white;
+            background: var(--primary-gradient);
+            box-shadow: var(--glow-primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-container {
+            position: relative;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            transition: all 0.2s;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+        }
+
+        .notification-container:hover {
+            background: var(--border-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .notification-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            width: 18px;
+            height: 18px;
+            background: var(--danger-gradient);
+            border-radius: 50%;
+            font-size: 0.75rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            border: 2px solid white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            transition: all 0.2s;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+        }
+
+        .user-profile:hover {
+            background: var(--border-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 0.875rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Main Container with Enhanced Spacing */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Premium Stats Bar */
+        .stats-section {
+            margin-bottom: 3rem;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface-elevated);
+            padding: 2.5rem;
+            border-radius: 1.25rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card.highlighted {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--glow-primary), var(--shadow-xl);
+        }
+
+        .stat-card.highlighted::before {
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 1;
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-card.highlighted .stat-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .stat-change.positive {
+            color: #10b981;
+        }
+
+        .stat-change.negative {
+            color: #ef4444;
+        }
+
+        .stat-card.highlighted .stat-change {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Enhanced Filter Bar */
+        .filter-section {
+            margin-bottom: 3rem;
+        }
+
+        .filter-bar {
+            background: var(--surface-elevated);
+            padding: 2rem;
+            border-radius: 1.25rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 160px;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-select,
+        .search-input {
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            background: var(--surface);
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-select:focus,
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: white;
+        }
+
+        .search-input {
+            min-width: 280px;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'/%3e%3c/svg%3e");
+            background-position: left 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1rem;
+            padding-left: 2.5rem;
+        }
+
+        /* Premium Investment Cards */
+        .investments-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .investments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .investment-card {
+            background: var(--surface-elevated);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .investment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .investment-card:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .investment-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Company Info with Premium Styling */
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 1rem;
+            background: var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-logo::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .investment-card:hover .company-logo::before {
+            opacity: 0.1;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.75rem;
+        }
+
+        .company-details h3 {
+            font-size: 1.375rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        .company-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .industry-tag {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .industry-technology { 
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        }
+        .industry-healthcare { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .industry-fintech { 
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        .industry-ecommerce { 
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .verification-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #10b981;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.5rem 0.75rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Investment Details with Enhanced Typography */
+        .investment-details {
+            margin-bottom: 2rem;
+        }
+
+        .investment-amount {
+            font-size: 2.25rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            background: rgba(59, 130, 246, 0.03);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(59, 130, 246, 0.08);
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-value {
+            font-weight: 800;
+            color: var(--text-primary);
+            font-size: 1.125rem;
+            letter-spacing: -0.025em;
+        }
+
+        /* Enhanced Status Indicators */
+        .status-indicators {
+            margin-bottom: 2rem;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .status-active {
+            background: var(--success-gradient);
+            color: white;
+            box-shadow: var(--glow-success);
+        }
+
+        .status-exited {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--glow-primary);
+        }
+
+        .timeline-indicator {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            background: var(--border-light);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+        }
+
+        .progress-container {
+            background: var(--border-light);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success-gradient);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .progress-label {
+            color: var(--text-secondary);
+        }
+
+        .progress-value {
+            color: var(--text-primary);
+        }
+
+        /* Premium Risk Meter */
+        .risk-meter-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            background: var(--border-light);
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .risk-meter {
+            display: flex;
+            gap: 4px;
+        }
+
+        .risk-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.3);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .risk-dot.active {
+            border-color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .risk-dot.active.low { 
+            background: var(--success-gradient);
+            box-shadow: var(--glow-success);
+        }
+        .risk-dot.active.medium { 
+            background: var(--warning-gradient);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+        }
+        .risk-dot.active.high { 
+            background: var(--danger-gradient);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .risk-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+        }
+
+        /* Premium Documents Section */
+        .documents-section {
+            margin-bottom: 2rem;
+        }
+
+        .documents-section h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .document-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .document-link:hover {
+            background: var(--primary-gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: var(--glow-primary), var(--shadow-lg);
+        }
+
+        .document-icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* Premium Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.875rem;
+            flex: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--glow-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-primary), var(--shadow-xl);
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-light);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Premium Footer */
+        .footer {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 6rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.5) 50%, transparent 100%);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .investments-grid {
+                grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .header-left {
+                gap: 2rem;
+            }
+
+            .nav-menu {
+                gap: 0.25rem;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                min-width: auto;
+            }
+
+            .investments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+                height: 70px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .main-container {
+                padding: 2rem 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .investment-card {
+                padding: 2rem;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .search-input {
+                min-width: auto;
+                width: 100%;
+            }
+
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .header,
+            .filter-section,
+            .footer,
+            .action-buttons {
+                display: none;
+            }
+
+            .main-container {
+                max-width: none;
+                padding: 1rem;
+            }
+
+            .investment-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 2px solid #e2e8f0;
+                margin-bottom: 2rem;
+            }
+
+            .investments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+
+        /* Loading States and Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .investment-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .investment-card:nth-child(1) { animation-delay: 0.1s; }
+        .investment-card:nth-child(2) { animation-delay: 0.2s; }
+        .investment-card:nth-child(3) { animation-delay: 0.3s; }
+        .investment-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* Accessibility Enhancements */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .investment-card {
+                border: 2px solid currentColor;
+            }
+            
+            .btn-primary {
+                border: 2px solid currentColor;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Premium Header -->
+    <header class="header">
+                <div class="user-profile">
+                    <div class="avatar">{{lastname}}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{lastname}}</div>
+                        <div class="user-role">Premium {{ustype}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+        <!-- Premium Investments Grid -->
+        <section class="investments-section">
+            <h2>Your Investments</h2>
+             {% for d in details %}
+            <div class="investments-grid">
+
+                <!-- DJANGO: Investment Loop Start -->
+                <article class="investment-card">
+
+                    <!-- Company Info Section -->
+                    <div class="company-info">
+                        <div class="company-logo">
+                            <!-- DJANGO: Company Logo -->
+                            <img src="{{ d.company_logo.url }}" alt="<!-- DJANGO: COMPANY_NAME --> Logo"  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        </div>
+                        <div class="company-details">
+                            <h3>{{d.companyname}}</h3>
+                            <div class="company-meta">
+                                <span >
+                                    {{d.industry}}
+                                </span>
+                                <div class="verification-badge">
+                                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Verified
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Investment Details -->
+                    <div class="investment-details">
+                        <div class="investment-amount">
+                            ${{d.amount}}
+                        </div>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Equity Owned</div>
+                                <div class="detail-value">{{d.equity}}%</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label"> Valuation</div>
+                                <div class="detail-value">${{d.valuation}}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Investment Date</div>
+                                <div class="detail-value">{{d.timestamp}}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">PaymentMethod</div>
+                                <div class="detail-value">{{d.method}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Indicators -->
+                    <div class="status-indicators">
+                        <div class="status-row">
+                            <span class="status-badge status-<!-- DJANGO: STATUS_SLUG -->active">
+                                <!-- DJANGO: STATUS -->Active
+                            </span>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: <!-- DJANGO: PROGRESS_PERCENTAGE -->75%"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span class="progress-label">Funding Progress</span>
+                                <span class="progress-value">100% Complete</span>
+                            </div>
+                        </div>
+
+                    <!-- Documents Section -->
+                    <div class="documents-section">
+                        <h4>Investment Documents</h4>
+                        <div class="documents-grid">
+                            <!-- DJANGO: Document URLs -->
+                            <a href="{{ d.legal_documents.url}}" class="document-link"  download="Agreement{{ d.companyname }}.pdf">
+                                <svg class="document-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                </svg>
+                                Agreement 
+                            </a>
+                            <a href="{{ d.pitch_deck.url }}" class="document-link" download="PitchDeck_{{ d.companyname }}.pdf">
+                                <svg class="document-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M19,19H5V5H19V19Z"/>
+                                    <path d="M7,10H9V16H7V10M11,7H13V16H11V7M15,13H17V16H15V13Z"/>
+                                </svg>
+                                pitch 
+                            </a>
+                            <a href="{{d.financial_statements}}" class="document-link" download="Financial{{ d.companyname }}.pdf">
+                                <svg class="document-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                    <path d="M9,13H15V15H9V13M9,16H13V18H9V16Z"/>
+                                </svg>
+                                Financial
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+    <!-- Premium Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>CapitalRaise</h4>
+                    <p>The premier investment platform connecting sophisticated investors with high-growth companies. Built for the modern investor.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Investment Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="/discover">Discover Opportunities</a></li>
+                        <li><a href="/investments">Portfolio Management</a></li>
+                        <li><a href="/analytics">Performance Analytics</a></li>
+                        <li><a href="/research">Market Research</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support & Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="/help">Investment Support</a></li>
+                        <li><a href="/education">Investor Education</a></li>
+                        <li><a href="/legal">Legal Framework</a></li>
+                        <li><a href="/compliance">Compliance Center</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Account Management</h4>
+                    <ul class="footer-links">
+                        <li><a href="/profile">Profile & Settings</a></li>
+                        <li><a href="/security">Security Center</a></li>
+                        <li><a href="/tax-center">Tax Documentation</a></li>
+                        <li><a href="/statements">Account Statements</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 CapitalRaise. All rights reserved. | Securities offered through registered broker-dealers. Investment involves risk including potential loss of principal. Past performance does not guarantee future results.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

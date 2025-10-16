@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raise Funds for Your Company - CapitalRaise</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background-color: #f8fafc;
+        }
+
+        /* CSS Custom Properties */
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #f8fafc;
+            --warning-color: #dc2626;
+            --success-color: #10b981;
+            --warning-bg: #fef2f2;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --light-gray: #f1f5f9;
+            --medium-gray: #e2e8f0;
+            --risk-low: #10b981;
+            --risk-medium: #f59e0b;
+            --risk-high: #dc2626;
+        }
+
+        /* Header Styles */
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .progress-step.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .progress-step.inactive {
+            background: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        .progress-arrow {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light-gray);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 60% 40%;
+            gap: 3rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Form Column */
+        .form-column {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .form-section {
+            margin-bottom: 3rem;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .form-label.required::after {
+            content: " *";
+            color: var(--warning-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .character-counter {
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .input-prefix {
+            position: relative;
+        }
+
+        .input-prefix::before {
+            content: "$";
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .input-prefix .form-input {
+            padding-left: 2rem;
+        }
+
+        .percentage-input {
+            position: relative;
+        }
+
+        .percentage-input::after {
+            content: "%";
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .percentage-input .form-input {
+            padding-right: 2rem;
+        }
+
+        /* Radio Button Groups */
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-item:hover {
+            background: var(--light-gray);
+        }
+
+        .radio-item input[type="radio"] {
+            margin: 0;
+        }
+
+        .radio-item input[type="radio"]:checked + label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .radio-item:has(input[type="radio"]:checked) {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 0.375rem;
+            padding: 2rem;
+            text-align: center;
+            transition: border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .logo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 0.5rem;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Financial Table */
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .financial-table th,
+        .financial-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .financial-table th {
+            background: var(--light-gray);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .financial-table input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.25rem;
+        }
+
+        .growth-rate {
+            background: var(--success-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Risk Assessment */
+        .risk-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: var(--light-gray);
+        }
+
+        .checkbox-item:has(input[type="checkbox"]:checked) {
+            border-color: var(--warning-color);
+            background: var(--warning-bg);
+        }
+
+        /* Preview Column */
+        .preview-column {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .preview-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .preview-card {
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            background: #fafafa;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 0.375rem;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .preview-company-info h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .preview-industry {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .preview-progress {
+            margin: 1rem 0;
+        }
+
+        .preview-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .preview-progress-fill {
+            height: 100%;
+            background: var(--success-color);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .preview-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.375rem;
+        }
+
+        .preview-metric {
+            text-align: center;
+        }
+
+        .preview-metric-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .preview-metric-value {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        /* Risk Meter */
+        .risk-meter-container {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.375rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .risk-meter-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .risk-meter {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--medium-gray);
+            transition: background 0.3s;
+        }
+
+        .risk-dot.active.low {
+            background: var(--risk-low);
+        }
+
+        .risk-dot.active.medium {
+            background: var(--risk-medium);
+        }
+
+        .risk-dot.active.high {
+            background: var(--risk-high);
+        }
+
+        .risk-level {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .financial-summary {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.375rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .financial-summary h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .financial-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .financial-label {
+            color: var(--text-secondary);
+        }
+
+        .financial-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .form-footer {
+            background: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            bottom: 0;
+            z-index: 50;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .legal-disclaimer {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .help-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .help-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .preview-column {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .progress-indicator {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .form-column,
+            .preview-column {
+                padding: 1rem;
+            }
+
+            .radio-group {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Hover States */
+        .form-input:hover {
+            border-color: var(--primary-color);
+        }
+
+        .file-upload:hover .upload-text {
+            color: var(--primary-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Focus States */
+        .btn:focus,
+        .form-input:focus,
+        input[type="radio"]:focus,
+        input[type="checkbox"]:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">CapitalRaise</a>
+            
+            
+            <div class="header-actions">
+                <a href="{% url "pdashboard" %}" class="btn btn-secondary">Exit</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Form Column (60% width) -->
+        <div class="form-column">
+            <!-- DJANGO FORM START -->
+            <form action="/submitcompany/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Company Details Section -->
+                <section class="form-section">
+                    <h2 class="section-title">Company Details</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="company-name">Company Name</label>
+                        <!-- DJANGO FIELD: company_name -->
+                        <input type="text" id="company-name" name="company_name" class="form-input" required placeholder="Enter your company name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="company-logo">Company Logo</label>
+                        <!-- DJANGO FIELD: company_logo -->
+                       <input type="file" id="imageFile" name="image" accept="image/*" required><br><br>
+                            <div class="upload-icon">📁</div>
+                            <div class="upload-text">Click to upload logo (PNG, JPG - Max 2MB)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Industry</label>
+                        <!-- DJANGO FIELD: industry -->
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="tech" name="industry" value="technology" required>
+                                <label for="tech">Technology</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="healthcare" name="industry" value="healthcare" required>
+                                <label for="healthcare">Healthcare</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="fintech" name="industry" value="fintech" required>
+                                <label for="fintech">Fintech</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="ecommerce" name="industry" value="ecommerce" required>
+                                <label for="ecommerce">E-commerce</label>
+                            </div>
+                        </div>
+                        <input type="text" name="industry_other" class="form-input" placeholder="Please specify..." style="margin-top: 0.5rem; display: none;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="company-origin">Company Origin</label>
+                        <!-- DJANGO FIELD: company_origin -->
+                        <select id="company-origin" name="company_origin" class="form-input" required>
+                            <option value="">Select country/state</option>
+                            <option value="us">United States</option>
+                            <option value="ind">india</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="ca">Canada</option>
+                            <option value="de">Germany</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="year-founded">Year Founded</label>
+                        <!-- DJANGO FIELD: year_founded -->
+                        <input type="date" id="year-founded" name="year_founded" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="description">Company Description</label>
+                        <!-- DJANGO FIELD: description -->
+                        <textarea id="description" name="description" class="form-input form-textarea" required placeholder="Describe your company (500 chars max)" maxlength="500"></textarea>
+                        <div class="character-counter">0/500 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="problem-solution">What problem do you solve?</label>
+                        <!-- DJANGO FIELD: problem_solution -->
+                        <textarea id="problem-solution" name="problem_solution" class="form-input form-textarea" required placeholder="Describe the problem and your solution" maxlength="300"></textarea>
+                        <div class="character-counter">0/300 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="competitive-advantage">Your competitive advantage</label>
+                        <!-- DJANGO FIELD: competitive_advantage -->
+                        <textarea id="competitive-advantage" name="competitive_advantage" class="form-input form-textarea" required placeholder="What makes you different from competitors?" maxlength="300"></textarea>
+                        <div class="character-counter">0/300 characters</div>
+                    </div>
+                </section>
+
+                <!-- Funding Details Section -->
+                <section class="form-section">
+                    <h2 class="section-title">Funding Details</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="funding-goal">Funding Goal</label>
+                        <!-- DJANGO FIELD: funding_goal -->
+                        <div class="input-prefix">
+                            <input type="number" id="funding-goal" name="funding_goal" class="form-input" required min="10000" placeholder="1000000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="valuation">Company Valuation</label>
+                        <!-- DJANGO FIELD: valuation -->
+                        <div class="input-prefix">
+                            <input type="number" id="valuation" name="valuation" class="form-input" required min="50000" placeholder="5000000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="equity-offered">Equity Offered</label>
+                        <!-- DJANGO FIELD: equity_offered -->
+                        <div class="percentage-input">
+                            <input type="number" id="equity-offered" name="equity_offered" class="form-input" required min="1" max="100" placeholder="20">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="funding-deadline">Funding Deadline</label>
+                        <!-- DJANGO FIELD: funding_deadline -->
+                        <input type="date" id="funding-deadline" name="funding_deadline" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="min-investment">Minimum Investment</label>
+                        <!-- DJANGO FIELD: min_investment -->
+                        <div class="input-prefix">
+                            <input type="number" id="min-investment" name="min_investment" class="form-input" required min="100" placeholder="1000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Risk Disclosure</label>
+                        <!-- DJANGO FIELD: risk_factors -->
+                        <div class="risk-checkboxes">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="risk-market" name="risk_factors" value="market_competition">
+                                <label for="risk-market">Market competition</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="risk-regulatory" name="risk_factors" value="regulatory_challenges">
+                                <label for="risk-regulatory">Regulatory challenges</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="risk-technology" name="risk_factors" value="technology_risks">
+                                <label for="risk-technology">Technology risks</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="risk-team" name="risk_factors" value="team_experience">
+                                <label for="risk-team">Team experience</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="risk-other" name="risk_factors" value="other">
+                                <label for="risk-other">Other (specify)</label>
+                            </div>
+                        </div>
+                        <input type="text" name="risk_other_specify" class="form-input" placeholder="Please specify other risks..." style="margin-top: 0.5rem; display: none;">
+                    </div>
+                </section>
+
+                <!-- Financial Performance Section -->
+                <section class="form-section">
+                    <h2 class="section-title">Financial Performance</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Past 3 Years Financial Data</label>
+                        <!-- DJANGO FIELD: financial_data -->
+                        <table class="financial-table">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Revenue ($)</th>
+                                    <th>Profit/Loss ($)</th>
+                                    <th>Assets ($)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2023</td>
+                                    <td><input type="number" name="revenue_2023" placeholder="0"></td>
+                                    <td><input type="number" name="profit_2023" placeholder="0"></td>
+                                    <td><input type="number" name="assets_2023" placeholder="0"></td>
+                                </tr>
+                                <tr>
+                                    <td>2022</td>
+                                    <td><input type="number" name="revenue_2022" placeholder="0"></td>
+                                    <td><input type="number" name="profit_2022" placeholder="0"></td>
+                                    <td><input type="number" name="assets_2022" placeholder="0"></td>
+                                </tr>
+                                <tr>
+                                    <td>2021</td>
+                                    <td><input type="number" name="revenue_2021" placeholder="0"></td>
+                                    <td><input type="number" name="profit_2021" placeholder="0"></td>
+                                    <td><input type="number" name="assets_2021" placeholder="0"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="margin-top: 1rem; text-align: center;">
+                            <span class="growth-rate">Growth Rate: Auto-calculated</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Document Upload Section -->
+                <section class="form-section">
+                    <h2 class="section-title">Document Upload</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="pitch-deck">Pitch Deck</label>
+                        <!-- DJANGO FIELD: pitch_deck -->
+                           <input type="file" id="pdfFile" name="pitch_deck" accept=".pdf" required>
+                            <div class="upload-icon">📄</div>
+                            <div class="upload-text">Upload Pitch Deck (PDF - Max 10MB)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="financial-statements">Financial Statements</label>
+                        <!-- DJANGO FIELD: financial_statements -->
+                        <input type="file" id="pdfFile" name="financial" accept=".pdf" required>
+                            <div class="upload-icon">📊</div>
+                            <div class="upload-text">Upload Financial Statements (PDF - Max 10MB)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="legal-documents">Legal Documents</label>
+                        <!-- DJANGO FIELD: legal_documents -->
+                        <input type="file" id="pdfFile" name="legal" accept=".pdf" required>
+                            <div class="upload-icon">⚖️</div>
+                            <div class="upload-text">Upload Legal Documents (PDF - Max 10MB)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="additional-materials">Additional Materials</label>
+                        <!-- DJANGO FIELD: additional_materials -->
+                       <input type="file" id="pdfFile" name="additional" accept=".pdf" required>
+                            <div class="upload-icon">📎</div>
+                            <div class="upload-text">Upload Additional Materials (PDF - Max 10MB each)</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                    <div>
+                <div >All information will be verified by our team</div>
+                <a href="{% url "submitcompany" %}" class="help-link">Need help? Contact support center</a>
+            </div>
+                </section>
+            </form>
+            <!-- DJANGO FORM END -->
+        </div>
+</body>
+</html>
